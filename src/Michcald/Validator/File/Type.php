@@ -1,32 +1,40 @@
 <?php
 
-namespace Dummy\Core\Validator;
+namespace Michcald\Validator\File;
 
-class FileTypeValidator extends AbstractValidator
+/**
+ * @author Michael Caldera <michcald@gmail.com>
+ */
+class Type extends \Michcald\Validator
 {
+    private $types = array();
+    
+    public function addType($type)
+    {
+        $this->types[] = $type;
+        
+        return $this;
+    }
+    
     public function validate($value)
     {
-        $name = $value['name'];
-        $type = $value['type']; // image/jpeg
-        $tmpName = $value['tmp_name'];
-        $error = $value['error'];
-        $size = $value['size'];
-        
-        if (isset($this->options['types'])) {
-            $types = explode(',', $this->options['types']);
-            
-            $shortType = str_replace('image/', '', $type);
-            
-            if (!in_array($shortType, $types)) {
-                return false;
-            }
+        if (!isset($value['type'])) {
+            return false;
         }
         
-        return true;
+        return in_array($value['type'], $this->types);
     }
     
     public function getError()
     {
-        return 'The allowed file types are '. $this->options['types'];
+        if (count($this->types) == 0) {
+            return 'No types allowed';
+        }
+        
+        if (count($this->types) == 1) {
+            return 'The allowed file type is '. array_shift($this->types);
+        }
+        
+        return 'The allowed file types are '. implode(', ', $this->types);
     }
 }

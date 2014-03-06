@@ -1,29 +1,29 @@
 <?php
 
-namespace Dummy\Core\Validator;
+namespace Michcald\Validator\File;
 
-class FileSizeValidator extends AbstractValidator
+/**
+ * @author Michael Caldera <michcald@gmail.com>
+ */
+class Size extends \Michcald\Validator
 {
+    private $max;
+    
+    public function setMax($max)
+    {
+        $this->max = (int)$max;
+        
+        return $this;
+    }
+    
     public function validate($value)
     {
-        $name = $value['name'];
-        $type = $value['type']; // image/jpeg
-        $tmpName = $value['tmp_name'];
-        $error = $value['error'];
-        $size = $value['size'];
-        
-        $sizeInMb = $size / 1024 / 1024;
-        
-        if (isset($this->options['max'])) {
-            if ($sizeInMb > $this->options['max']) {
-                return false;
-            }
+        if (!isset($value['size'])) {
+            return false;
         }
         
-        if (isset($this->options['min'])) {
-            if ($sizeInMb < $this->options['min']) {
-                return false;
-            }
+        if ($this->max && $value['size'] > $this->max) {
+            return false;
         }
         
         return true;
@@ -31,16 +31,6 @@ class FileSizeValidator extends AbstractValidator
     
     public function getError()
     {
-        $str = 'The file size must be ';
-        
-        if (isset($this->options['min'])) {
-            $str .= ' minimum ' . $this->options['min'] . 'MB and ';
-        }
-        
-        if (isset($this->options['max'])) {
-            $str .= ' maximum ' . $this->options['max'] . 'MB';
-        }
-        
-        return $str;
+        return 'The file size must be lower than ' . $this->max . ' bytes';
     }
 }
