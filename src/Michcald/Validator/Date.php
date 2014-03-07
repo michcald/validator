@@ -4,17 +4,31 @@ namespace Michcald\Validator;
 
 class Date extends \Michcald\Validator
 {
+    private $error;
+    
+    private $format = 'Y-m-d';
+    
+    public function setFormat($format)
+    {
+        $this->format = $format;
+        
+        return $this;
+    }
+    
     public function validate($value)
     {
-        $day = date('d', strtotime($value));
-        $month = date('m', strtotime($value));
-        $year = date('Y', strtotime($value));
-
-        return checkdate($month, $day, $year);
+        $info = date_parse_from_format($this->format, $value);
+        
+        if (isset($info['error_count']) && $info['error_count'] > 0) {
+            $this->error = array_shift($info['errors']);
+            return false;
+        }
+        
+        return true;
     }
     
     public function getError()
     {
-        return 'Must be a valid date YYYY-MM-DD';
+        return $this->error;
     }
 }

@@ -21,39 +21,43 @@ class Length extends \Michcald\Validator
     
     public function setMax($length)
     {
-        $this->max = (int)$length;
+        $length = (int)$length;
+        
+        if ($length < 0) {
+            $length = 0;
+        }
+        
+        $this->max = $length;
         
         return $this;
     }
     
     public function setMin($length)
     {
-        $this->min = (int)$length;
+        $length = (int)$length;
+        
+        if ($length < 0) {
+            $length = 0;
+        }
+        
+        $this->min = $length;
         
         return $this;
     }
     
     public function validate($value)
     {
-        if ($this->equal) {
+        if ($this->equal !== null) {
             return strlen($value) == $this->equal;
         }
         
-        if ($this->min && $this->max) {
-            if (strlen($value) < $this->min || strlen($value) > $this->max) {
-                $this->error = 'String length must be between ' . $this->min . 
-                    ' and ' . $this->max;
-                return false;
-            }
-        }
-        
-        if ($this->min && strlen($value) < $this->min) {
-            $this->error = 'String length must be more than ' . $this->min;
+        if ($this->max !== null && strlen($value) > $this->max) {
+            $this->error = 'String length must be lower than ' . $this->max;
             return false;
         }
         
-        if ($this->max && strlen($value) > $this->max) {
-            $this->error = 'String length must be lower than ' . $this->max;
+        if ($this->min !== null && strlen($value) < $this->min) {
+            $this->error = 'String length must be higher than ' . $this->min;
             return false;
         }
         
