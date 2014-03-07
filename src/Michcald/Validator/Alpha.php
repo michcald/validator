@@ -17,7 +17,11 @@ class Alpha extends \Michcald\Validator
     {
         $regex = $this->allowWhiteSpaces ? '/^[a-zA-Z\s]*$/' : '/^[a-zA-Z]*$/';
 
-        return preg_match($regex , $value);
+        if (preg_match($regex , $value)) {
+            return true;
+        }
+        
+        return false;
     }
     
     public function getError()

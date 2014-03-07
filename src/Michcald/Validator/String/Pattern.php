@@ -15,7 +15,11 @@ class Pattern extends \Michcald\Validator
     
     public function validate($value)
     {
-        return preg_match($this->regex , $value);
+        if (preg_match($this->regex , $value)) {
+            return true;
+        }
+        
+        return false;
     }
     
     public function getError()

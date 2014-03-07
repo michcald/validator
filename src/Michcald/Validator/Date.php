@@ -9,7 +9,7 @@ class Date extends \Michcald\Validator
         $day = date('d', strtotime($value));
         $month = date('m', strtotime($value));
         $year = date('Y', strtotime($value));
-        
+
         return checkdate($month, $day, $year);
     }
     

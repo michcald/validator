@@ -17,7 +17,11 @@ class Alnum extends \Michcald\Validator
     {
         $regex = $this->allowWhiteSpaces ? '/^[a-zA-Z0-9\s]*$/' : '/^[a-zA-Z0-9]*$/';
 
-        return preg_match($regex , $value);
+        if (preg_match($regex , $value)) {
+            return true;
+        }
+        
+        return false;
     }
     
     public function getError()

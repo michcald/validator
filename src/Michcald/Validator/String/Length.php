@@ -6,26 +6,39 @@ class Length extends \Michcald\Validator
 {
     private $error;
     
+    private $equal;
+    
     private $max;
     
     private $min;
     
-    public function setMax($max)
+    public function setEqual($length)
     {
-        $this->max = (int)$max;
+        $this->equal = (int)$length;
         
         return $this;
     }
     
-    public function setMin($min)
+    public function setMax($length)
     {
-        $this->min = (int)$min;
+        $this->max = (int)$length;
+        
+        return $this;
+    }
+    
+    public function setMin($length)
+    {
+        $this->min = (int)$length;
         
         return $this;
     }
     
     public function validate($value)
     {
+        if ($this->equal) {
+            return strlen($value) == $this->equal;
+        }
+        
         if ($this->min && $this->max) {
             if (strlen($value) < $this->min || strlen($value) > $this->max) {
                 $this->error = 'String length must be between ' . $this->min . 
