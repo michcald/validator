@@ -4,8 +4,6 @@ namespace Michcald\Validator;
 
 class Date extends \Michcald\Validator
 {
-    private $error;
-    
     private $format = 'Y-m-d';
     
     public function setFormat($format)
@@ -25,10 +23,5 @@ class Date extends \Michcald\Validator
         }
         
         return true;
-    }
-    
-    public function getError()
-    {
-        return $this->error;
     }
 }

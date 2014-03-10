@@ -5,32 +5,53 @@ namespace Michcald\Validator\File;
 /**
  * @author Michael Caldera <michcald@gmail.com>
  */
-class Size extends \Michcald\Validator
+class Size extends \Michcald\Validator\Number
 {
-    private $max;
+    private $currencies = array(
+        'B',    // bytes
+        'KB',   // kilobytes
+        'MB',   // megabytes
+        'GB',   // gigabytes
+        'TB'    // terabytes
+    );
     
-    public function setMax($max)
+    private $currency = 'B';
+    
+    public function setCurrency($currency)
     {
-        $this->max = (int)$max;
+        if (!in_array($currency, $this->currencies)) {
+            throw new \Exception('Wrong unit of measure: ' . $currency);
+        }
+        
+        $this->currency = $currency;
         
         return $this;
     }
     
-    public function validate($value)
+    public function validate($filename)
     {
-        if (!isset($value['size'])) {
+        if (!file_exists($filename)) {
+            $this->error[] = 'Must be a file';
             return false;
         }
         
-        if ($this->max && $value['size'] > $this->max) {
-            return false;
-        }
+        $filesize = filesize($filename); // in Bytes
         
-        return true;
-    }
-    
-    public function getError()
-    {
-        return 'The file size must be lower than ' . $this->max . ' bytes';
+        switch ($this->currency) {
+            case 'KB':
+                $filesize = $filesize / pow(1024, 1);
+                break;
+            case 'MB':
+                $filesize = $filesize / pow(1024, 2);
+                break;
+            case 'GB':
+                $filesize = $filesize / pow(1024, 3);
+                break;
+            case 'TB':
+                $filesize = $filesize / pow(1024, 4);
+                break;
+        }
+
+        return parent::validate($filesize);
     }
 }

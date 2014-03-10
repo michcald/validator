@@ -6,11 +6,12 @@ class Bool extends \Michcald\Validator
 {
     public function validate($value)
     {
-        return is_bool($value);
-    }
-    
-    public function getError()
-    {
-        return 'Must be a boolean';
+        $this->errors = array();
+        
+        if (!is_bool($value)) {
+            $this->errors[] = 'Must be a boolean';
+        }
+        
+        return count($this->errors) == 0;
     }
 }

@@ -6,16 +6,16 @@ class NotNull extends \Michcald\Validator
 {
     public function validate($value)
     {
+        $this->errors = array();
+        
         if ($value === '') {
             return true;
         }
         
-        return !is_null($value);
+        if (is_null($value)) {
+            $this->errors[] = 'Must be not null';
+        }
+        
+        return count($this->errors) == 0;
     }
-
-    public function getError()
-    {
-        return 'Must be not null';
-    }
-
 }

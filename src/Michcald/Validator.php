@@ -4,7 +4,12 @@ namespace Michcald;
 
 abstract class Validator
 {
+    protected $errors = array();
+    
     abstract public function validate($value);
     
-    abstract public function getError();
+    final public function getErrors()
+    {
+        return $this->errors;
+    }
 }

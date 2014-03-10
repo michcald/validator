@@ -6,16 +6,13 @@ class NotEmpty extends \Michcald\Validator
 {
     public function validate($value)
     {
-        if (strlen($value) > 0) {
-            return true;
+        $this->errors = array();
+        
+        if (strlen($value) == 0) {
+            $this->errors[] = 'Must be not empty';
         }
         
-        return false;
-    }
-
-    public function getError()
-    {
-        return 'Must be not empty';
+        return count($this->errors) == 0;
     }
 
 }

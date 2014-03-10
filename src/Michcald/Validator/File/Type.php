@@ -5,36 +5,19 @@ namespace Michcald\Validator\File;
 /**
  * @author Michael Caldera <michcald@gmail.com>
  */
-class Type extends \Michcald\Validator
+class Type extends \Michcald\Validator\InArray
 {
-    private $types = array();
-    
-    public function addType($type)
+    public function validate($filename)
     {
-        $this->types[] = $type;
-        
-        return $this;
-    }
-    
-    public function validate($value)
-    {
-        if (!isset($value['type'])) {
+        if (!file_exists($filename)) {
+            $this->error = 'Must be a file';
             return false;
         }
         
-        return in_array($value['type'], $this->types);
-    }
-    
-    public function getError()
-    {
-        if (count($this->types) == 0) {
-            return 'No types allowed';
-        }
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $type = $finfo->file($filename);
         
-        if (count($this->types) == 1) {
-            return 'The allowed file type is '. array_shift($this->types);
-        }
-        
-        return 'The allowed file types are '. implode(', ', $this->types);
+        return parent::validate($type);
     }
 }
+
