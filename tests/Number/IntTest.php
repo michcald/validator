@@ -20,6 +20,8 @@ class IntTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($val->validate(-5), true);
         $this->assertEquals($val->validate(-0), true);
         
+        $this->assertEquals($val->validate(null), false);
+        $this->assertEquals($val->validate(''), false);
         $this->assertEquals($val->validate('0'), false);
         $this->assertEquals($val->validate('1'), false);
         $this->assertEquals($val->validate('-2'), false);
@@ -33,5 +35,6 @@ class IntTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($val->validate('0a'), false);
         $this->assertEquals($val->validate('1d'), false);
         $this->assertEquals($val->validate('ewr'), false);
+        $this->assertEquals($val->validate('asdf'), false);
     }
 }
