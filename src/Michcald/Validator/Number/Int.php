@@ -6,7 +6,9 @@ class Int extends \Michcald\Validator\Number
 {
     public function validate($value)
     {
-        if (!is_int($value)) {
+        $value = filter_var($value, FILTER_VALIDATE_INT);
+        
+        if ($value === false) {
             $this->errors[] = 'Must be an integer';
             return false;
         }
