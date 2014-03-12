@@ -9,8 +9,10 @@ class Type extends \Michcald\Validator\InArray
 {
     public function validate($filename)
     {
+        $this->errors = array();
+        
         if (!file_exists($filename)) {
-            $this->error = 'Must be a file';
+            $this->errors[] = 'Must be a file';
             return false;
         }
         

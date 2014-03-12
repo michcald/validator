@@ -15,10 +15,12 @@ class Date extends \Michcald\Validator
     
     public function validate($value)
     {
+        $this->errors = array();
+        
         $info = date_parse_from_format($this->format, $value);
         
         if (isset($info['error_count']) && $info['error_count'] > 0) {
-            $this->error = array_shift($info['errors']);
+            $this->errors[] = array_shift($info['errors']);
             return false;
         }
         
