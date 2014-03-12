@@ -8,7 +8,7 @@ abstract class Validator
     
     abstract public function validate($value);
     
-    final public function getErrors()
+    final public function getErrorMessages()
     {
         return $this->errors;
     }
