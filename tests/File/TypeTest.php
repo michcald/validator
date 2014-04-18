@@ -9,11 +9,11 @@ class FileTypeTest extends PHPUnit_Framework_TestCase
     {
         $val = new Michcald\Validator\File\Type();
         $val->setArray(array(
-            'text/x-c++',
+            'text/x-c++', // PHP content type
             'image/jpeg',
-            'image/jpg'
+            'image/jpg',
         ));
-        
+
         $this->assertEquals($val->validate(__FILE__), true);
         
         $val = new Michcald\Validator\File\Type();

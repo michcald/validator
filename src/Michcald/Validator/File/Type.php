@@ -12,7 +12,7 @@ class Type extends \Michcald\Validator\InArray
     {
         $this->errors = array();
 
-        if (!is_uploaded_file($filename) || !file_exists($filename)) {
+        if (!file_exists($filename) && !is_uploaded_file($filename)) {
             $this->errors[] = 'Must be a file';
             return false;
         }

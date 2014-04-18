@@ -26,9 +26,10 @@ class InArray extends \Michcald\Validator
 
         if (!in_array($value, $this->array, true)) {
             $this->errors[] = 'Must be one of these (' . implode(',', $this->array) . ')';
+            return false;
         }
 
-        return count($this->errors) == 0;
+        return true;
     }
 
 }
